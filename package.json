@@ -1,24 +1,32 @@
 {
-  "name": "react-vite-tailwind-template-v2",
-  "id": "b140b0a7-1101-4222-97a6-53f9426c2fdb",
-  "description": "Minimal unopinionated React + TypeScript + Vite + Tailwind + shadcn/ui template",
+  "name": "marketing-funds",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "ui:add": "shadcn add"
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.8.2",
     "@tanstack/react-query": "^5.85.5",
+    "lucide-react": "^0.542.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4",
+    "class-variance-authority": "^0.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3",
     "tailwindcss": "^4.1.12",
-    "lucide-react": "^0.542.0"
-    // ... demais dependências (radix-ui, framer-motion, recharts, d3, etc.)
+    "@tailwindcss/vite": "^4.1.12"
   }
 }
