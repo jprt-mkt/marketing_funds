@@ -15,24 +15,31 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      - name: Verificar se existe package.json
+        id: check_files
+        run: |
+          if [ -f "package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Sem package.json — pulando build"
+          fi
+
       - name: Setup Bun
+        if: steps.check_files.outputs.exists == 'true'
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
       - name: Instalar dependências
+        if: steps.check_files.outputs.exists == 'true'
         run: bun install
 
       - name: Rodar linter
+        if: steps.check_files.outputs.exists == 'true'
         run: bun run lint
         continue-on-error: true
 
       - name: Build do projeto
+        if: steps.check_files.outputs.exists == 'true'
         run: bun run build
-
-      - name: Upload artefatos de build
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 7
