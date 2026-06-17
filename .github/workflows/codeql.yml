@@ -3,10 +3,20 @@ name: CodeQL Security Scan
 on:
   push:
     branches: [main]
+    paths:
+      - '**/*.js'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.jsx'
   pull_request:
     branches: [main]
+    paths:
+      - '**/*.js'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.jsx'
   schedule:
-    - cron: '0 6 * * 1' # Toda segunda às 6h UTC
+    - cron: '0 6 * * 1'
 
 jobs:
   analyze:
@@ -26,12 +36,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verificar se existe código JS/TS
+        id: check_code
+        run: |
+          if find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.jsx" \) -not -path "./node_modules/*" | grep -q .; then
+            echo "has_code=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_code=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Sem código JS/TS — pulando análise"
+          fi
+
       - name: Initialize CodeQL
+        if: steps.check_code.outputs.has_code == 'true'
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
       - name: Perform CodeQL Analysis
+        if: steps.check_code.outputs.has_code == 'true'
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
